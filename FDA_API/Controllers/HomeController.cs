@@ -30,6 +30,15 @@ namespace FDA_API.Controllers
 			return Json(result);
 		}
 
+		[HttpGet]
+		public async Task<JsonResult> FindReportsByDate(string date, CancellationToken cancellationToken)
+		{
+			var result = await CallBusinessActionAsyncWithResult(() =>
+				fdaService.FindReportsByDate(date, cancellationToken));
+
+			return Json(result);
+		}
+
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{

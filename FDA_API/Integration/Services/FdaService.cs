@@ -24,17 +24,17 @@ namespace FDA_API.Integration.Services
 		{
 			if (year <= 0)
 			{
-				throw new ArgumentException("Value shoul be greater than zero", nameof(year));
+				throw new ArgumentException("Value should be greater than zero", nameof(year));
 			}
 
 			var response = await fdaClient.FindReportDateWithFewestCountByYear(year, cancellationToken);
-			if (response == null || !response.Any())
+			if (response?.Results == null || !response.Results.Any())
 			{
 				_logger.Warning($"API method {nameof(FindReportDateWithFewestCountByYear)} returned no results!");
 				return string.Empty;
 			}
 
-			var date = FindReportDate(response);
+			var date = FindReportDate(response.Results);
 
 			if (DateTime.TryParseExact(date, DateFormat, new CultureInfo("en-US"), DateTimeStyles.None, out DateTime dateValue))
 			{
@@ -54,6 +54,24 @@ namespace FDA_API.Integration.Services
 			var sortedResult = response.Where(x => !string.IsNullOrEmpty(x.Time)).OrderBy(x => x.Count).ToList();
 
 			return sortedResult.First() == null ? string.Empty : sortedResult.First().Time;
+		}
+
+		/// <inheritdoc/>
+		public async Task<List<Report>> FindReportsByDate(string date, CancellationToken cancellationToken)
+		{
+			if (string.IsNullOrEmpty(date))
+			{
+				throw new ArgumentException("Value should be specified", nameof(date));
+			}
+
+			var response = await fdaClient.FindReportsByDate(date, cancellationToken);
+			if (response?.Results == null || !response.Results.Any())
+			{
+				_logger.Warning($"API method {nameof(FindReportsByDate)} returned no results!");
+				return null;
+			}
+
+			return response.Results;
 		}
 	}
 }

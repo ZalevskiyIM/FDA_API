@@ -9,12 +9,22 @@ namespace FDA_API.Integration.Clients
 		public const string GetCountOfReportsByYearUrl = "?search=report_date:[{0}0101+TO+{0}1231]&count=report_date";
 		public const string GetReportsByDateAndCount = "?search=report_date:{0}&limit={1}";
 
-		public async Task<List<CountResult>?> FindReportDateWithFewestCountByYear(int year, CancellationToken cancellationToken)
+		/// <inheritdoc/>
+		public async Task<ApiResult<CountResult>> FindReportDateWithFewestCountByYear(int year, CancellationToken cancellationToken)
 		{
 			var url = new Uri(string.Format($"{baseFdaApiUrl}{GetCountOfReportsByYearUrl}", year ));
 			var response = await GetAsync<ApiResult<CountResult>>(url, cancellationToken);
 
-			return response?.Results;
+			return response;
+		}
+
+		/// <inheritdoc/>
+		public async Task<ApiResult<Report>> FindReportsByDate(string date, CancellationToken cancellationToken)
+		{
+			var url = new Uri(string.Format($"{baseFdaApiUrl}{GetReportsByDateAndCount}", date));
+			var response = await GetAsync<ApiResult<Report>>(url, cancellationToken);
+
+			return response;
 		}
 	}
 }
