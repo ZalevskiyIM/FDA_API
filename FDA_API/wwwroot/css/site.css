@@ -1,0 +1,48 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+	display: grid;
+	margin: auto;
+}
+
+.date_container {
+	padding: 20px;
+	line-height: initial;
+}
+
+.legend {
+	border: 1px solid #000000;
+	line-height: 0;
+	text-align: left;
+	margin-top: 40px;	
+}
+
+.width_50 {
+	width: 50%;
+}
+
+.legend span {
+	background-color: #ffffff;
+	padding: 0 10px;
+	margin: 0 20px;
+	font-weight: bold;
+}
+
+#report_date_input {
+	width: 100px;
+	text-align: center;
+}
+

@@ -1,0 +1,66 @@
+﻿@model FDA_API.Models.InexViewModel;
+
+@{
+	ViewData["Title"] = "Home Page";
+}
+
+<div class="legend width_50">
+	<span>Report Date</span>
+	<div class="date_container">
+		<p>
+			<label for="report_date_input">
+				<b>report_date</b> with the fewest recalls in the year 2012:
+			</label>
+			<input type="text" id="report_date_input" disabled = "disabled">
+		</p> 
+		<p>
+			<input type="button" onclick="findReportDate('@Url.Action("FindReportDate", "Home", new { year = "2012" })');" class="button" value="Find date">
+		</p>
+	</div>
+</div>
+
+<div class="legend">
+	<span>Recalls</span>
+	<div class="date_container">
+		<p>
+			<button >Find recalls</button>
+		</p>
+	</div>
+</div>
+
+@section scripts{
+
+	<script>
+		function findReportDate(url) {
+			$.ajax({
+				url: url,
+				type: 'GET',
+				dataType: 'json',
+				success: function (results) {
+					if(results) {
+						setInputValue("report_date_input", results);
+					}
+					else{
+						console.warn("Report date not found.");
+					}
+				},
+				error: function (error) {
+					console.error(error);
+				}
+			});
+		};
+
+		function	setInputValue(id, value) {
+			var input = document.getElementById(id);
+			if(input) {
+				report_date_input.value = value;
+			}
+			else{
+				console.warn("Input with Id " + id + " not found.");
+			}
+		};
+
+
+	</script>
+}
+
