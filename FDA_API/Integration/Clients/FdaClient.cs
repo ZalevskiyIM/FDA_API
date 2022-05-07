@@ -21,6 +21,7 @@ namespace FDA_API.Integration.Clients
 		/// <inheritdoc/>
 		public async Task<ApiResult<Report>> FindReportsByDate(string date, CancellationToken cancellationToken)
 		{
+			//todo add Count
 			var url = new Uri(string.Format($"{baseFdaApiUrl}{GetReportsByDateAndCount}", date));
 			var response = await GetAsync<ApiResult<Report>>(url, cancellationToken);
 

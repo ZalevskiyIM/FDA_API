@@ -14,7 +14,7 @@
 			<input type="text" id="report_date_input" disabled = "disabled">
 		</p> 
 		<p>
-			<input type="button" onclick="findReportDate('@Url.Action("FindReportDate", "Home", new { year = "2012" })');" class="button" value="Find date">
+			<input type="button" onclick="findReportDate();" class="button" value="Find date">
 		</p>
 	</div>
 </div>
@@ -23,7 +23,7 @@
 	<span>Recalls</span>
 	<div class="date_container">
 		<p>
-			<button >Find recalls</button>
+				<input type="button" onclick="findRecalls();" class="button" value="Find recalls">
 		</p>
 	</div>
 </div>
@@ -31,13 +31,18 @@
 @section scripts{
 
 	<script>
-		function findReportDate(url) {
+		var reportDate;
+
+		function findReportDate() {
+			var url = '@Url.Action("FindReportDate", "Home", new { year = "2012" })';
+
 			$.ajax({
 				url: url,
 				type: 'GET',
 				dataType: 'json',
 				success: function (results) {
 					if(results) {
+						reportDate = results;
 						setInputValue("report_date_input", results);
 					}
 					else{
@@ -60,6 +65,26 @@
 			}
 		};
 
+		function findRecalls() {
+			var url = '@Url.Action("FindReportsByDate", "Home", new { date = "" })';
+
+			$.ajax({
+				url: url,
+				type: 'GET',
+				dataType: 'json',
+				success: function (results) {
+					if(results) {
+						
+					}
+					else{
+						console.warn("Recalls  not found.");
+					}
+				},
+				error: function (error) {
+					console.error(error);
+				}
+			});
+		};
 
 	</script>
 }

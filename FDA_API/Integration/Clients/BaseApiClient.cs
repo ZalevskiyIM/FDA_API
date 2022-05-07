@@ -26,7 +26,7 @@ namespace FDA_API.Integration.Clients
 			_logger = Log.Logger;
 		}
 
-		public async Task<T?> GetAsync<T>(Uri url, CancellationToken cancellationToken)
+		public async Task<T> GetAsync<T>(Uri url, CancellationToken cancellationToken)
 		{
 			if (url == null)
 			{
@@ -35,7 +35,7 @@ namespace FDA_API.Integration.Clients
 			}
 
 			HttpResponseMessage response;
-			T? result;
+			T result;
 			try
 			{
 				response = await HttpClient.GetAsync(url, cancellationToken);
