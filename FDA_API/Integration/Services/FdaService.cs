@@ -12,6 +12,7 @@ namespace FDA_API.Integration.Services
 		private readonly IFdaClient fdaClient;
 		private readonly ILogger _logger;
 		private const string DateFormat = "yyyyMMdd";//20120815
+		private const int MaxLimit = 1000;
 
 		public FdaService(IFdaClient fdaClient)
 		{
@@ -27,7 +28,7 @@ namespace FDA_API.Integration.Services
 				throw new ArgumentException("Value should be greater than zero", nameof(year));
 			}
 
-			var response = await fdaClient.FindReportDateWithFewestCountByYear(year, cancellationToken);
+			var response = await fdaClient.GetAmountOfReportsByYear(year, cancellationToken);
 			if (response?.Results == null || !response.Results.Any())
 			{
 				_logger.Warning($"API method {nameof(FindReportDateWithFewestCountByYear)} returned no results!");
@@ -38,7 +39,7 @@ namespace FDA_API.Integration.Services
 
 			if (DateTime.TryParseExact(date, DateFormat, new CultureInfo("en-US"), DateTimeStyles.None, out DateTime dateValue))
 			{
-				return dateValue.ToString("d");
+				return dateValue.ToShortDateString();
 			}
 
 			return date;
@@ -64,14 +65,35 @@ namespace FDA_API.Integration.Services
 				throw new ArgumentException("Value should be specified", nameof(date));
 			}
 
-			var response = await fdaClient.FindReportsByDate(date, cancellationToken);
+			var formattedDate = GetFormattedDate(date);
+
+			var getAmountResponse = await fdaClient.GetAmountOfReportsByDate(formattedDate, cancellationToken);
+
+			var count = (getAmountResponse?.Results != null && getAmountResponse.Results.Any()) ? 
+				getAmountResponse.Results.First().Count : 
+				MaxLimit;
+
+			var response = await fdaClient.FindReportsByDate(formattedDate, count, cancellationToken);
 			if (response?.Results == null || !response.Results.Any())
 			{
 				_logger.Warning($"API method {nameof(FindReportsByDate)} returned no results!");
 				return null;
 			}
 
-			return response.Results;
+			return response.Results.OrderBy(x => x.Recall_initiation_dateTime).ToList();
+		}
+
+		private string GetFormattedDate(string date)
+		{
+			if (string.IsNullOrEmpty(date))
+			{
+				return string.Empty;
+			}
+
+			var array = date.Split(".");
+			Array.Reverse(array);
+
+			return String.Concat(array);
 		}
 	}
 }

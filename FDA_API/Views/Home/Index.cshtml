@@ -23,7 +23,7 @@
 	<span>Recalls</span>
 	<div class="date_container">
 		<p>
-				<input type="button" onclick="findRecalls();" class="button" value="Find recalls">
+				<input id="find_recalls_button" disabled="disabled" type="button" onclick="findRecalls();" class="button" value="Find recalls">
 		</p>
 	</div>
 </div>
@@ -31,7 +31,6 @@
 @section scripts{
 
 	<script>
-		var reportDate;
 
 		function findReportDate() {
 			var url = '@Url.Action("FindReportDate", "Home", new { year = "2012" })';
@@ -42,8 +41,8 @@
 				dataType: 'json',
 				success: function (results) {
 					if(results) {
-						reportDate = results;
 						setInputValue("report_date_input", results);
+						activateButton("find_recalls_button");
 					}
 					else{
 						console.warn("Report date not found.");
@@ -65,8 +64,20 @@
 			}
 		};
 
+		function activateButton(id){
+			var button = document.getElementById(id);
+			if(button) {
+				button.removeAttribute('disabled');
+			}
+			else{
+				console.warn("Element with Id " + id + " not found.");
+			}
+		}
+
 		function findRecalls() {
-			var url = '@Url.Action("FindReportsByDate", "Home", new { date = "" })';
+			var url = '@Url.Action("FindReportsByDate", "Home", new { date = "-1" })';
+			var date = document.getElementById("report_date_input").value;
+			url = url.replace("-1", date);
 
 			$.ajax({
 				url: url,

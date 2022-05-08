@@ -1,10 +1,14 @@
-﻿namespace FDA_API.Integration.Models
+﻿using System.Globalization;
+
+namespace FDA_API.Integration.Models
 {
 	/// <summary>
 	/// Report model.
 	/// </summary>
 	public class Report
 	{
+		private const string DateFormat = "yyyyMMdd";
+
 		public string Country { get; set; }
 		public string City { get; set; }
 		public string Address_1 { get; set; }
@@ -27,6 +31,24 @@
 		public string Termination_date { get; set; }
 		public string More_code_info { get; set; }
 		public string Recall_initiation_date { get; set; }
+
+		public DateTime Recall_initiation_dateTime 
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(Recall_initiation_date))
+				{
+					return DateTime.MinValue;
+				}
+
+				if (DateTime.TryParseExact(Recall_initiation_date, DateFormat, new CultureInfo("en-US"), DateTimeStyles.None, out DateTime dateValue))
+				{
+					return dateValue;
+				}
+
+				return DateTime.MinValue;
+			}
+		}
 		public string Postal_code { get; set; }
 		public string Voluntary_mandated { get; set; }
 		public string Status { get; set; }

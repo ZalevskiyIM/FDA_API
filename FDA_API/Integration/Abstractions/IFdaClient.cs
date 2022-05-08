@@ -5,19 +5,28 @@ namespace FDA_API.Integration.Abstractions
 	public interface IFdaClient
 	{
 		/// <summary>
-		/// Find report date with the fewest number of recalls by year.
+		/// Find report's amount by year.
 		/// </summary>
-		/// <param name="dateRange">Date range to pass to API</param>
+		/// <param name="year">Year to find report's amount</param>
 		/// <param name="cancellationToken">Cancellation token</param>
 		/// <returns>Report date</returns>
-		Task<ApiResult<CountResult>> FindReportDateWithFewestCountByYear(int year, CancellationToken cancellationToken);
+		Task<ApiResult<CountResult>> GetAmountOfReportsByYear(int year, CancellationToken cancellationToken);
+
+		/// <summary>
+		/// Find report's amount by date.
+		/// </summary>
+		/// <param name="date">Date to find report's amount</param>
+		/// <param name="cancellationToken">Cancellation token</param>
+		/// <returns></returns>
+		Task<ApiResult<CountResult>> GetAmountOfReportsByDate(string date, CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Find all reports by date
 		/// </summary>
 		/// <param name="date">Date to find reports by</param>
+		/// <param name="count">Number of reports to get</param>
 		/// <param name="cancellationToken">Cancellation token</param>
 		/// <returns>Reports</returns>
-		Task<ApiResult<Report>> FindReportsByDate(string date, CancellationToken cancellationToken);
+		Task<ApiResult<Report>> FindReportsByDate(string date, int count, CancellationToken cancellationToken);
 	}
 }
