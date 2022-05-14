@@ -14,8 +14,8 @@ html {
 }
 
 body {
-	display: grid;
-	margin: auto;
+	display: block;
+	margin: auto;	
 }
 
 .date_container {
@@ -32,6 +32,30 @@ body {
 
 .width_50 {
 	width: 50%;
+}
+
+.width_100{
+	width: 100%;
+}
+
+.height_60 {
+	height: 60%;
+}
+
+.height_700 {
+	height: 700px;
+}
+
+.height_100 {
+	height:100%;
+}
+
+.no_resize {
+	resize: none;
+}
+
+.height_inherit{
+	height: inherit;
 }
 
 .legend span {

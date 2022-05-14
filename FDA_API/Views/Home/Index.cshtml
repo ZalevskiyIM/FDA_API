@@ -4,29 +4,50 @@
 	ViewData["Title"] = "Home Page";
 }
 
-<div class="legend width_50">
-	<span>Report Date</span>
-	<div class="date_container">
-		<p>
-			<label for="report_date_input">
-				<b>report_date</b> with the fewest recalls in the year 2012:
-			</label>
-			<input type="text" id="report_date_input" disabled = "disabled">
-		</p> 
-		<p>
-			<input type="button" onclick="findReportDate();" class="button" value="Find date">
-		</p>
+<div style="height:100%">
+
+	<div class="legend width_50">
+		<span>1. Report Date</span>
+		<div class="date_container">
+			<p>
+				<label for="report_date_input">
+					<b>report_date</b> with the fewest recalls in the year 2012:
+				</label>
+				<input type="text" id="report_date_input" disabled = "disabled">
+			</p> 
+			<p>
+				<input type="button" onclick="findReportDate();" class="button" value="Find date">
+			</p>
+		</div>
 	</div>
+
+	<div class="legend ">
+		<span>2. Recalls</span>
+		<div class="date_container height_100">
+			<p>
+					<input id="find_recalls_button" disabled="disabled" type="button" onclick="findRecalls();" class="button" value="Find recalls">
+			</p>
+			<textarea disabled = "disabled" class="height_700 width_100 no_resize" id="recalls_textarea"></textarea>
+		</div>
+	</div>
+
+	<div class="legend">
+		<span>3. Most frequent word</span>
+		<div class="date_container height_100">
+			<p>
+				<label for="frequent_word_input">
+					Word with the highest number of occurrences under the reason_for_recall :
+				</label>
+				<input type="text" id="frequent_word_input" disabled = "disabled">
+			</p> 
+			<p>
+				<input type="button" id="frequent_word_button" disabled = "disabled" onclick="findWord();" class="button" value="Find word">
+			</p>
+		</div>
+	</div>
+
 </div>
 
-<div class="legend">
-	<span>Recalls</span>
-	<div class="date_container">
-		<p>
-				<input id="find_recalls_button" disabled="disabled" type="button" onclick="findRecalls();" class="button" value="Find recalls">
-		</p>
-	</div>
-</div>
 
 @section scripts{
 
@@ -85,10 +106,18 @@
 				dataType: 'json',
 				success: function (results) {
 					if(results) {
-						
+						var textarea = document.getElementById("recalls_textarea");
+						if(textarea) {
+							textarea.value = JSON.stringify(results, null, 2);
+							debugger;
+							activateButton("frequent_word_button");
+						}
+						else{
+							console.warn("Input with Id " + id + " not found.");
+						}
 					}
 					else{
-						console.warn("Recalls  not found.");
+						console.warn("Recalls not found.");
 					}
 				},
 				error: function (error) {
@@ -96,6 +125,10 @@
 				}
 			});
 		};
+
+		function findWord(){
+
+		}
 
 	</script>
 }
