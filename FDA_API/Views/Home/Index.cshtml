@@ -78,7 +78,7 @@
 		function	setInputValue(id, value) {
 			var input = document.getElementById(id);
 			if(input) {
-				report_date_input.value = value;
+				input.value = value;
 			}
 			else{
 				console.warn("Input with Id " + id + " not found.");
@@ -109,7 +109,6 @@
 						var textarea = document.getElementById("recalls_textarea");
 						if(textarea) {
 							textarea.value = JSON.stringify(results, null, 2);
-							debugger;
 							activateButton("frequent_word_button");
 						}
 						else{
@@ -127,7 +126,27 @@
 		};
 
 		function findWord(){
+			var url = '@Url.Action("FindMostFequentWord", "Home")';
+			var recalls = document.getElementById("recalls_textarea").value;
 
+			$.ajax({
+				url: url,
+				type: 'POST',
+				dataType: 'json',
+				data: JSON.stringify(recalls),
+				contentType: 'application/json; charset=utf-8',
+				success: function (results) {
+					if(results) {
+						setInputValue("frequent_word_input", results);
+					}
+					else{
+						console.warn("Word not found.");
+					}
+				},
+				error: function (error) {
+					console.error(error);
+				}
+			});
 		}
 
 	</script>

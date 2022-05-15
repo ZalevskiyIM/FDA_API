@@ -39,6 +39,15 @@ namespace FDA_API.Controllers
 			return Json(result);
 		}
 
+		[HttpPost]
+		public JsonResult FindMostFequentWord([FromBody] string reportsJson, CancellationToken cancellationToken)
+		{
+			var result = CallBusinessActionWithResult(() =>
+				 fdaService.FindMostFequentWord(reportsJson));
+
+			return Json(result);
+		}
+
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{

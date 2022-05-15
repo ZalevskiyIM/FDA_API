@@ -22,5 +22,12 @@ namespace FDA_API.Integration.Abstractions
 		/// <param name="cancellationToken">Cancellation token</param>
 		/// <returns></returns>
 		Task<List<Report>> FindReportsByDate(string date, CancellationToken cancellationToken);
+
+		/// <summary>
+		/// Finds most frequent word in reason_for_recall field or reports.
+		/// </summary>
+		/// <param name="reportsJson">Repots as json</param>
+		/// <returns></returns>
+		string FindMostFequentWord(string reportsJson);
 	}
 }

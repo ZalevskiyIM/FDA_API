@@ -31,5 +31,21 @@ namespace FDA_API.Controllers
 
 			return result;
 		}
+
+		public T CallBusinessActionWithResult<T>(Func<T> func)
+		{
+			T result;
+			try
+			{
+				result = func.Invoke();
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, ex.Message);
+				throw;
+			}
+
+			return result;
+		}
 	}
 }

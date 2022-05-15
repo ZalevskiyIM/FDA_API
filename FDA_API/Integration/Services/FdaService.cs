@@ -1,5 +1,6 @@
 ﻿using FDA_API.Integration.Abstractions;
 using FDA_API.Integration.Models;
+using Newtonsoft.Json;
 using Serilog;
 using System.Globalization;
 using ILogger = Serilog.ILogger;
@@ -13,6 +14,7 @@ namespace FDA_API.Integration.Services
 		private readonly ILogger _logger;
 		private const string DateFormat = "yyyyMMdd";//20120815
 		private const int MaxLimit = 1000;
+		private const int MinWordLength = 4;
 
 		public FdaService(IFdaClient fdaClient)
 		{
@@ -94,6 +96,49 @@ namespace FDA_API.Integration.Services
 			Array.Reverse(array);
 
 			return String.Concat(array);
+		}
+
+		public string FindMostFequentWord(string reportsJson)
+		{
+			if (string.IsNullOrEmpty(reportsJson))
+			{
+				return string.Empty;
+			}
+
+			var reports = JsonConvert.DeserializeObject<IList<Report>>(reportsJson);
+			if (reports == null || !reports.Any())
+			{
+				return string.Empty;
+			}
+
+			var reasons = reports.Where(x => !string.IsNullOrEmpty(x.Reason_for_recall))
+				.Select(x => x.Reason_for_recall.Split(' ').Where(y => y.Length >= MinWordLength).ToList())
+				.ToList();
+			if (reasons == null || !reasons.Any())
+			{
+				return string.Empty;
+			}
+
+			var wordAndCount = new Dictionary<string, int>();
+			foreach (var reason in reasons)
+			{
+				foreach (var item in reason)
+				{
+					if (wordAndCount.ContainsKey(item))
+					{
+						var value = wordAndCount[item];
+						wordAndCount[item] = ++value;
+					}
+					else
+					{
+						wordAndCount.Add(item, 1);
+					}
+				}
+			}
+
+			var result = wordAndCount.FirstOrDefault(x => x.Value == wordAndCount.Values.Max());
+
+			return result.Key;
 		}
 	}
 }
