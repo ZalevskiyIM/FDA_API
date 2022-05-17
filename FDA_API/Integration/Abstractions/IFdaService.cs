@@ -29,5 +29,12 @@ namespace FDA_API.Integration.Abstractions
 		/// <param name="reportsJson">Repots as json</param>
 		/// <returns></returns>
 		string FindMostFequentWord(string reportsJson);
+
+		/// <summary>
+		/// Find date with fewest count within list of CountResult
+		/// </summary>
+		/// <param name="countResults">Results of count request</param>
+		/// <returns>Date as string</returns>
+		string FindDateWithFewestCount(List<CountResult> countResults);
 	}
 }

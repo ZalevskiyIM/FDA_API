@@ -97,3 +97,16 @@ C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\obj\Debug\net6.0\refint\FDA_AP
 C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\obj\Debug\net6.0\FDA_API.Tests.pdb
 C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\obj\Debug\net6.0\FDA_API.Tests.genruntimeconfig.cache
 C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\obj\Debug\net6.0\ref\FDA_API.Tests.dll
+C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\bin\Debug\net6.0\CoverletSourceRootsMapping
+C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\bin\Debug\net6.0\FDA_API.deps.json
+C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\bin\Debug\net6.0\FDA_API.runtimeconfig.json
+C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\bin\Debug\net6.0\appsettings.json
+C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\bin\Debug\net6.0\FDA_API.staticwebassets.runtime.json
+C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\bin\Debug\net6.0\FDA_API.exe
+C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\bin\Debug\net6.0\Castle.Core.dll
+C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\bin\Debug\net6.0\Moq.dll
+C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\bin\Debug\net6.0\Serilog.dll
+C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\bin\Debug\net6.0\Serilog.Sinks.File.dll
+C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\bin\Debug\net6.0\FDA_API.dll
+C:\Users\zalev\source\repos\FDA_API\FDA_API.Tests\bin\Debug\net6.0\FDA_API.pdb

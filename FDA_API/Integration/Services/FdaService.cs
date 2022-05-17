@@ -37,7 +37,7 @@ namespace FDA_API.Integration.Services
 				return string.Empty;
 			}
 
-			var date = FindReportDate(response.Results);
+			var date = FindDateWithFewestCount(response.Results);
 
 			if (DateTime.TryParseExact(date, DateFormat, new CultureInfo("en-US"), DateTimeStyles.None, out DateTime dateValue))
 			{
@@ -47,7 +47,7 @@ namespace FDA_API.Integration.Services
 			return date;
 		}
 
-		public static string FindReportDate(List<CountResult> response)
+		public string FindDateWithFewestCount(List<CountResult> response)
 		{
 			if (response == null || !response.Any())
 			{
@@ -56,7 +56,7 @@ namespace FDA_API.Integration.Services
 
 			var sortedResult = response.Where(x => !string.IsNullOrEmpty(x.Time)).OrderBy(x => x.Count).ToList();
 
-			return sortedResult.First() == null ? string.Empty : sortedResult.First().Time;
+			return sortedResult.FirstOrDefault() == null ? string.Empty : sortedResult.First().Time;
 		}
 
 		/// <inheritdoc/>
