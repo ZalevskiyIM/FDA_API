@@ -7,21 +7,39 @@ namespace FDA_API.Integration.Clients
 	/// <summary>
 	/// Base class for all API clients
 	/// </summary>
-	public class BaseApiClient
+	public class ApiClient
 	{
-		private static readonly Lazy<HttpClient> httpClient = new Lazy<HttpClient>();
+		private static HttpClient? _httpClient;
+		private static readonly object _lock = new();
 
 		/// <summary>
 		/// Logger
 		/// </summary>
-		protected readonly ILogger _logger;
+		private readonly ILogger _logger;
 
 		/// <summary>
 		/// Common HttpClient.
 		/// </summary>
-		public static HttpClient HttpClient => httpClient.Value;
+		public static HttpClient HttpClient
+		{
+			get
+			{
+				if (_httpClient == null)
+				{
+					lock (_lock)
+					{
+						if (_httpClient == null)
+						{
+							_httpClient = new HttpClient();
+						}
+					}
+				}
 
-		public BaseApiClient()
+				return _httpClient;
+			}
+		}
+
+		public ApiClient() 
 		{
 			_logger = Log.Logger;
 		}

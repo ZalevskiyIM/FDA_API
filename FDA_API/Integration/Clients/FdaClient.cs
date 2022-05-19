@@ -3,7 +3,7 @@ using FDA_API.Integration.Models;
 
 namespace FDA_API.Integration.Clients
 {
-	public class FdaClient : BaseApiClient, IFdaClient
+	public class FdaClient : ApiClient, IFdaClient
 	{
 		private const string BaseFdaApiUrl = "https://api.fda.gov/food/enforcement.json";
 		private const string GetCountOfReportsByYearUrl = "?search=report_date:[{0}0101+TO+{0}1231]&count=report_date";
