@@ -14,7 +14,8 @@ Log.Logger = new LoggerConfiguration()
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IFdaService, FdaService>();
-builder.Services.AddScoped<IFdaClient, FdaClient>();
+
+builder.Services.AddHttpClient<IFdaClient, FdaClient>();
 
 var app = builder.Build();
 

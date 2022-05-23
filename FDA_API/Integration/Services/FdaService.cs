@@ -1,4 +1,5 @@
-﻿using FDA_API.Integration.Abstractions;
+﻿using FDA_API.Common;
+using FDA_API.Integration.Abstractions;
 using FDA_API.Integration.Models;
 using Newtonsoft.Json;
 using Serilog;
@@ -12,9 +13,6 @@ namespace FDA_API.Integration.Services
 	{
 		private readonly IFdaClient fdaClient;
 		private readonly ILogger _logger;
-		private const string DateFormat = "yyyyMMdd";//20120815
-		private const int MaxLimit = 1000;
-		private const int MinWordLength = 4;
 
 		public FdaService(IFdaClient fdaClient)
 		{
@@ -39,7 +37,7 @@ namespace FDA_API.Integration.Services
 
 			var date = FindDateWithFewestCount(response.Results);
 
-			if (DateTime.TryParseExact(date, DateFormat, new CultureInfo("en-US"), DateTimeStyles.None, out DateTime dateValue))
+			if (DateTime.TryParseExact(date, Constants.DateFormat, new CultureInfo("en-US"), DateTimeStyles.None, out DateTime dateValue))
 			{
 				return dateValue.ToShortDateString();
 			}
@@ -47,6 +45,7 @@ namespace FDA_API.Integration.Services
 			return date;
 		}
 
+		/// <inheritdoc/>
 		public string FindDateWithFewestCount(List<CountResult> response)
 		{
 			if (response == null || !response.Any())
@@ -71,9 +70,9 @@ namespace FDA_API.Integration.Services
 
 			var getAmountResponse = await fdaClient.GetAmountOfReportsByDate(formattedDate, cancellationToken);
 
-			var count = (getAmountResponse?.Results != null && getAmountResponse.Results.Any()) ? 
-				getAmountResponse.Results.First().Count : 
-				MaxLimit;
+			var count = (getAmountResponse?.Results != null && getAmountResponse.Results.Any()) ?
+				getAmountResponse.Results.First().Count :
+				Constants.MaxRecordsLimit;
 
 			var response = await fdaClient.FindReportsByDate(formattedDate, count, cancellationToken);
 			if (response?.Results == null || !response.Results.Any())
@@ -85,19 +84,7 @@ namespace FDA_API.Integration.Services
 			return response.Results.OrderBy(x => x.Recall_initiation_dateTime).ToList();
 		}
 
-		private string GetFormattedDate(string date)
-		{
-			if (string.IsNullOrEmpty(date))
-			{
-				return string.Empty;
-			}
-
-			var array = date.Split(".");
-			Array.Reverse(array);
-
-			return String.Concat(array);
-		}
-
+		/// <inheritdoc/>
 		public string FindMostFequentWord(string reportsJson)
 		{
 			if (string.IsNullOrEmpty(reportsJson))
@@ -112,7 +99,7 @@ namespace FDA_API.Integration.Services
 			}
 
 			var reasons = reports.Where(x => !string.IsNullOrEmpty(x.Reason_for_recall))
-				.Select(x => x.Reason_for_recall.Split(' ').Where(y => y.Length >= MinWordLength).ToList())
+				.Select(x => x.Reason_for_recall.Split(' ').Where(y => y.Length >= Constants.MinWordLength).ToList())
 				.ToList();
 			if (reasons == null || !reasons.Any())
 			{
@@ -139,6 +126,19 @@ namespace FDA_API.Integration.Services
 			var result = wordAndCount.FirstOrDefault(x => x.Value == wordAndCount.Values.Max());
 
 			return result.Key;
+		}
+
+		private static string GetFormattedDate(string date)
+		{
+			if (string.IsNullOrEmpty(date))
+			{
+				return string.Empty;
+			}
+
+			var array = date.Split(".");
+			Array.Reverse(array);
+
+			return String.Concat(array);
 		}
 	}
 }

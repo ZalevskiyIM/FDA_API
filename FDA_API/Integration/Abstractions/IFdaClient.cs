@@ -10,7 +10,7 @@ namespace FDA_API.Integration.Abstractions
 		/// <param name="year">Year to find report's amount</param>
 		/// <param name="cancellationToken">Cancellation token</param>
 		/// <returns>Report date</returns>
-		Task<ApiResult<CountResult>> GetAmountOfReportsByYear(int year, CancellationToken cancellationToken);
+		Task<ApiResult<CountResult>?> GetAmountOfReportsByYear(int year, CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Find report's amount by date.
@@ -18,7 +18,7 @@ namespace FDA_API.Integration.Abstractions
 		/// <param name="date">Date to find report's amount</param>
 		/// <param name="cancellationToken">Cancellation token</param>
 		/// <returns></returns>
-		Task<ApiResult<CountResult>> GetAmountOfReportsByDate(string date, CancellationToken cancellationToken);
+		Task<ApiResult<CountResult>?> GetAmountOfReportsByDate(string date, CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Find all reports by date
@@ -27,6 +27,6 @@ namespace FDA_API.Integration.Abstractions
 		/// <param name="count">Number of reports to get</param>
 		/// <param name="cancellationToken">Cancellation token</param>
 		/// <returns>Reports</returns>
-		Task<ApiResult<Report>> FindReportsByDate(string date, int count, CancellationToken cancellationToken);
+		Task<ApiResult<Report>?> FindReportsByDate(string date, int count, CancellationToken cancellationToken);
 	}
 }
